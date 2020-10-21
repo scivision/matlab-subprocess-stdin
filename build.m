@@ -1,11 +1,12 @@
 function build(src, exe)
-narginchk(2,2)
-
-if ~isfile(exe)
-  [ret, msg] = system(['gfortran ', src, ' -o ', exe]);
-  assert(ret == 0, msg)
+arguments
+  src (1,1) string
+  exe (1,1) string
 end
 
-assert(isfile(exe), ['cannot find ', exe])
+if ~isfile(exe)
+  ret = system("gfortran " + src + " -o " + exe);
+  assert(ret == 0)
+end
 
 end

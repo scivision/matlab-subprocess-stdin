@@ -1,8 +1,9 @@
-function main_java(a, b)
+function ab_sum = main_java(a, b)
 %% demo adding two number via Fortran executable called by Java
-narginchk(2,2)
-validateattributes(a, {'numeric'}, {'scalar'}, 1)
-validateattributes(b, {'numeric'}, {'scalar'}, 2)
+arguments
+  a (1,1) {mustBeNumeric}
+  b (1,1) {mustBeNumeric}
+end
 
 cwd = fullfile(fileparts(mfilename('fullpath')));
 
@@ -30,9 +31,9 @@ writer.close()
 
 line = reader.readLine();
 i = 1;
-msg = '';
+msg = "";
 while ~isempty(line)
-  msg = [msg, newline, char(line)];
+  msg = append(msg, newline, string(line));
   line = reader.readLine();
   i = i + 1;
 end
@@ -41,6 +42,4 @@ h.destroy()
 assert(h.exitValue()==0, 'problem running executable')
 %% parse output
 ab_sum = cell2mat(textscan(msg, '%f', 'CollectOutput', true));
-
-fprintf('%f + %f = %f\n', a, b, ab_sum)
 end

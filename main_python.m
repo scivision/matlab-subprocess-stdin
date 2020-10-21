@@ -1,8 +1,9 @@
-function main_python(a,b)
+function ab_sum = main_python(a,b)
 %% demo adding two number via Fortran executable called by Python
-narginchk(2,2)
-validateattributes(a, {'numeric'}, {'scalar'}, 1)
-validateattributes(b, {'numeric'}, {'scalar'}, 2)
+arguments
+  a (1,1) {mustBeNumeric}
+  b (1,1) {mustBeNumeric}
+end
 
 cwd = fullfile(fileparts(mfilename('fullpath')));
 
@@ -19,7 +20,4 @@ ret = py.subprocess.check_output(exe, pyargs('input', in_stream, 'text', true, '
 % this raises Matlab error if executable fails
 %% parse output
 ab_sum = cell2mat(textscan(char(ret), '%f', 'CollectOutput', true));
-
-fprintf('%f + %f = %f\n', a, b, ab_sum)
-
 end

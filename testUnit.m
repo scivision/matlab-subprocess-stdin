@@ -2,13 +2,6 @@ function tests = testUnit
 tests = functiontests(localfunctions);
 end
 
-function setupOnce(tc)
-import matlab.unittest.constraints.IsFile
-exe = "main.exe";
-build("main.cpp", exe)
-tc.assumeThat(exe, IsFile)
-end
-
 function test_java(tc)
 a = 3.5;
 b = 7.75;

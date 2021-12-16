@@ -5,15 +5,14 @@ arguments
   b (1,1) {mustBeNumeric}
 end
 
-src = "main.cpp";
-exe_name = "main.exe";
-
 cwd = fullfile(fileparts(mfilename('fullpath')));
 
 %% create command line
-exe = fullfile(cwd, exe_name);
-build(src, exe)
-
+bin_dir = fullfile(cwd, "build");
+exe = fullfile(bin_dir, "main");
+if ~any(isfile([exe, exe + ".exe"]))
+  cmake(cwd, bin_dir)
+end
 %% assemble stdin
 % notice that the last character is a newline.
 in_stream = sprintf('%f %f\n', a, b);

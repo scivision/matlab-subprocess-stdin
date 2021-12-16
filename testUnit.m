@@ -4,8 +4,8 @@ end
 
 function setupOnce(tc)
 import matlab.unittest.constraints.IsFile
-exe = "main.bin";
-build("main.f90", exe)
+exe = "main.exe";
+build("main.cpp", exe)
 tc.assumeThat(exe, IsFile)
 end
 

@@ -5,22 +5,25 @@ arguments
   b (1,1) {mustBeNumeric}
 end
 
+src = "main.cpp";
+exe_name = "main.exe";
+
 cwd = fullfile(fileparts(mfilename('fullpath')));
 
 %% create command line
-exe = fullfile(cwd, 'main.exe');
-build('main.f90', exe)
+exe = fullfile(cwd, exe_name);
+build(src, exe)
 
 %% assemble stdin
 % notice that the last character is a newline.
 in_stream = sprintf('%f %f\n', a, b);
 
-%% run via Python
+%% run via Java
 proc = java.lang.ProcessBuilder(exe);
 h = proc.start();
 
 stdin = h.getOutputStream();
-stdout =h.getInputStream();
+stdout = h.getInputStream();
 
 writer = java.io.BufferedWriter(java.io.OutputStreamWriter(stdin));
 reader = java.io.BufferedReader(java.io.InputStreamReader(stdout));
@@ -39,7 +42,7 @@ while ~isempty(line)
 end
 reader.close()
 h.destroy()
-assert(h.exitValue()==0, 'problem running executable')
+assert(h.exitValue() == 0, 'problem running executable')
 %% parse output
 ab_sum = cell2mat(textscan(msg, '%f', 'CollectOutput', true));
 end

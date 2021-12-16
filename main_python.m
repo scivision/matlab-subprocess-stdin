@@ -5,11 +5,14 @@ arguments
   b (1,1) {mustBeNumeric}
 end
 
+src = "main.cpp";
+exe_name = "main.exe";
+
 cwd = fullfile(fileparts(mfilename('fullpath')));
 
 %% create command line
-exe = fullfile(cwd, 'main.exe');
-build('main.f90', exe)
+exe = fullfile(cwd, exe_name);
+build(src, exe)
 
 %% assemble stdin
 % notice that the last character is a newline.

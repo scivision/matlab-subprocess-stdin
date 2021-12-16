@@ -19,11 +19,3 @@ If your application allows, doing this directly in Python is generally easier an
 
 On Windows, using `system()` with MPIexec can cause intermittent segfaults that don't occur from Terminal.
 Try using py.subprocess instead of system() on Windows, checking first that the user has Python available.
-
-## Example
-
-From Matlab:
-
-```matlab
-testUnit
-```

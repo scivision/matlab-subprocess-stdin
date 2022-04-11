@@ -2,7 +2,7 @@ function cmake(src_dir, build_dir)
 % build program using CMake and default generator
 % specify CMake generator: set environment variable CMAKE_GENERATOR
 arguments
-  src_dir (1,1) string
+  src_dir (1,1) string {mustBeFolder}
   build_dir (1,1) string
 end
 
@@ -10,7 +10,6 @@ end
 % build_dir needs absolute as well or CMake will use pwd instead
 % see Matlab-stdlib posix and absolute_path for solution.
 
-assert(isfolder(src_dir), "source directory not found: %s", src_dir)
 assert(isfile(fullfile(src_dir, "CMakeLists.txt")), "%s does not contain CMakeLists.txt", src_dir)
 
 assert(system("cmake --version") == 0, 'CMake not found')

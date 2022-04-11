@@ -1,8 +1,8 @@
 function ab_sum = main_python(a,b)
 %% demo adding two number via Fortran executable called by Python
 arguments
-  a (1,1) {mustBeNumeric}
-  b (1,1) {mustBeNumeric}
+  a (1,1) {mustBeReal}
+  b (1,1) {mustBeReal}
 end
 
 exe = find_or_build("main_cpp");

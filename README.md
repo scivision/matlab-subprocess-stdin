@@ -19,3 +19,7 @@ If your application allows, doing this directly in Python is generally easier an
 
 On Windows, using `system()` with MPIexec can cause intermittent segfaults that don't occur from Terminal.
 Try using py.subprocess instead of system() on Windows, checking first that the user has Python available.
+
+## GNU Octave
+
+Because the syntax of GNU Octave Java subsystem is distinct and doesn't always work from Windows, this project code is for Matlab only.

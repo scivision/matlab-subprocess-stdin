@@ -1,5 +1,6 @@
 function bin = compile(src)
 %% compile single source file (C, C++, Fortran)
+% tries to use mex compiler, falls back to generic GCC-like compiler
 arguments (Input)
   src (1,1) string {mustBeFile}
 end
@@ -17,29 +18,41 @@ end
 switch src_ext
   case {".cpp", ".cxx"}
     c = mex.getCompilerConfigurations('c++');
+    if isempty(c)
+      cc = "c++";
+    end
   case ".c"
     c = mex.getCompilerConfigurations('c');
+    if isempty(c)
+      cc = "cc";
+    end
   case {".f", ".F", ".f90", ".F90"}
     c = mex.getCompilerConfigurations('fortran');
+    if isempty(c)
+      cc = "gfortran";
+    end
   otherwise
     error("unhandled source type " + src_ext)
 end
 
-cc = c.Details.CompilerExecutable;
 msvcLike = false;
-if ispc
-  msvcLike = endsWith(cc, "cl");
-end
-shell = strtrim(c.Details.CommandLineShell);
-shell_arg = c.Details.CommandLineShellArg;
+shell = '';
+extraFlag = "";
+outFlag = "-o";
 
-if msvcLike
-  shell = append('"', shell, '"');
-  extraFlag = append("/EHsc /Fo", tempdir);
-  outFlag = "/link /out:";
-else
-  extraFlag = "";
-  outFlag = "-o";
+if(~isempty(c))
+  cc = c.Details.CompilerExecutable;
+  if ispc
+    msvcLike = endsWith(cc, "cl");
+  end
+  shell = strtrim(c.Details.CommandLineShell);
+  shell_arg = c.Details.CommandLineShellArg;
+
+  if msvcLike
+    shell = append('"', shell, '"');
+    extraFlag = append("/EHsc /Fo", tempdir);
+    outFlag = "/link /out:";
+  end
 end
 
 cmd = append(cc, " ", extraFlag, " ", src, " ", outFlag, bin);

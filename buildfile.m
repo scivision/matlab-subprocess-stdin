@@ -5,10 +5,9 @@ end
 function compileTask(context)
 cwd = context.Plan.RootFolder;
 % cmake(cwd, fullfile(cwd, "build"))
-compile(fullfile(cwd, "main.cpp"), "main")
+exe = compile(fullfile(cwd, "main.cpp"));
 
-exe = find_exe("main");
-assert(~isempty(exe), "failed to build/find main_cpp")
+assert(isfile(exe), "failed to build/find main")
 end
 
 function testTask(~)

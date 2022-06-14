@@ -1,44 +1,56 @@
-function compile(src, bin)
-%% compile C++ source file
+function bin = compile(src)
+%% compile single source file (C, C++, Fortran)
 arguments (Input)
   src (1,1) string {mustBeFile}
-  bin (1,1) string
+end
+arguments (Output)
+  bin (1,1) string {mustBeFile}
 end
 
-[d,s,e] = fileparts(src);
-[~,~,ext] = fileparts(bin);
+[~,src_name, src_ext] = fileparts(src);
 
-switch e
+bin = src_name;
+if ispc
+  bin = append(bin, ".exe");
+end
+
+switch src_ext
   case {".cpp", ".cxx"}
-    cpp = mex.getCompilerConfigurations('c++');
-    cxx = cpp.Details.CompilerExecutable;
-    if ispc
-      msvcLike = endsWith(cxx, "cl");
-      if ext ~= ".exe"
-        bin = append(bin, ".exe");
-      end
-    else
-      msvcLike = false;
-    end
+    c = mex.getCompilerConfigurations('c++');
+  case ".c"
+    c = mex.getCompilerConfigurations('c');
+  case {".f", ".F", ".f90", ".F90"}
+    c = mex.getCompilerConfigurations('fortran');
   otherwise
-    error("unhandled source type " + e)
+    error("unhandled source type " + src_ext)
 end
+
+cc = c.Details.CompilerExecutable;
+msvcLike = false;
+if ispc
+  msvcLike = endsWith(cc, "cl");
+end
+shell = strtrim(c.Details.CommandLineShell);
+shell_arg = c.Details.CommandLineShellArg;
 
 if msvcLike
-  extraFlag = "/EHsc";
-  outFlag = "/out:";
+  shell = append('"', shell, '"');
+  extraFlag = append("/EHsc /Fo", tempdir);
+  outFlag = "/link /out:";
 else
-  extraFlag = string.empty;
+  extraFlag = "";
   outFlag = "-o";
 end
 
-cmd = append(cxx, " ", extraFlag, " ", src, " /link ", outFlag, bin);
-if(~isempty(cpp.Details.CommandLineShell))
-  cmd = append('"', strtrim(cpp.Details.CommandLineShell), '"', " ", cpp.Details.CommandLineShellArg, " && ", cmd);
+cmd = append(cc, " ", extraFlag, " ", src, " ", outFlag, bin);
+if(~isempty(shell))
+  cmd = append(shell, " ", shell_arg, " && ", cmd);
 end
 
 disp(cmd)
 
-system(cmd)
+[ret, msg] = system(cmd);
+
+assert(ret==0, "failed to compile %s:   %s", bin, msg)
 
 end

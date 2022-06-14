@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.23)
+cmake_minimum_required(VERSION 3.19)
 
 project(STDIN_examples LANGUAGES CXX)
 
@@ -11,7 +11,7 @@ set(b 3)
 math(EXPR c "${a} + ${b}")
 
 # --- test executable
-add_executable(main_cpp main.cpp)
+add_executable(main main.cpp)
 # add_executable(main_fortran main.f90)
 
 # --- Matlab + Java: stdin pipe example

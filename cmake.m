@@ -15,7 +15,6 @@ assert(isfile(fullfile(src_dir, "CMakeLists.txt")), "%s does not contain CMakeLi
 assert(system("cmake --version") == 0, 'CMake not found')
 
 %% configure
-% don't use ctest -S as it can infinite loop
 cmd = "cmake -S" + src_dir + " -B" + build_dir;
 assert(system(cmd) == 0, "error configuring %s with CMake", src_dir)
 

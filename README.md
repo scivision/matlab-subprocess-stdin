@@ -15,11 +15,28 @@ Ultimately the fastest runtime performance is probably by directly connecting th
 This piping method works with blackbox executables or executables that cannot be recompiled for various reasons.
 If your application allows, doing this directly in Python is generally easier and of course Python works better than Matlab for many such real-world deployed applications.
 
-## Windows
+From Matlab:
+
+```matlab
+buildtool compile test
+```
+
+Or use CMake:
+
+```sh
+cmake -B build
+cmake --build build
+ctest --test-dir build
+```
+
+
+## Notes
+
+### Windows
 
 On Windows, using `system()` with MPIexec can cause intermittent segfaults that don't occur from Terminal.
 Try using py.subprocess instead of system() on Windows, checking first that the user has Python available.
 
-## GNU Octave
+### GNU Octave
 
 Because the syntax of GNU Octave Java subsystem is distinct and doesn't always work from Windows, this project code is for Matlab only.

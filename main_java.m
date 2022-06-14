@@ -5,7 +5,8 @@ arguments
   b (1,1) {mustBeReal}
 end
 
-exe = find_or_build("main_cpp");
+exe = find_exe("main");
+assert(~isempty(exe), "need to 'buildtool compile'")
 
 %% assemble stdin
 % notice that the last character is a newline.
@@ -35,7 +36,7 @@ while ~isempty(line)
 end
 reader.close()
 h.destroy()
-assert(h.exitValue() == 0, 'problem running executable')
+assert(h.exitValue() == 0, 'problem running %s', exe)
 %% parse output
-ab_sum = cell2mat(textscan(msg, '%f', 'CollectOutput', true));
+ab_sum = cell2mat(textscan(msg, '%f', CollectOutput=true));
 end

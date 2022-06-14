@@ -1,4 +1,6 @@
 *.exe
 *.asv
 *.bin
+*.o
+*.obj
 build*/

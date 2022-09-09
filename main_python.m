@@ -13,6 +13,7 @@ assert(~isempty(exe), "need to 'buildtool compile'")
 in_stream = sprintf('%f %f\n', a, b);
 
 %% run via Python
+disp("Using Python: " + pyenv().Executable)
 ret = py.subprocess.check_output(exe, pyargs(input=in_stream, text=true, timeout=5));
 % this raises Matlab error if executable fails
 %% parse output

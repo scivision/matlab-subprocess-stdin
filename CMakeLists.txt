@@ -4,6 +4,9 @@ project(STDIN_examples LANGUAGES CXX)
 
 enable_testing()
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_FIND_FRAMEWORK LAST)
+
 find_package(Matlab COMPONENTS MAIN_PROGRAM REQUIRED)
 # --- test values (arbitrary)
 set(a 5)
@@ -28,6 +31,4 @@ COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_python(${a}, ${b}) == ${c})"
 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set_tests_properties(MatlabJavaCXX MatlabPythonCXX PROPERTIES
-TIMEOUT 90
-)
+set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY TIMEOUT 90)

@@ -4,7 +4,6 @@ project(STDIN_examples LANGUAGES CXX)
 
 enable_testing()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_FIND_FRAMEWORK LAST)
 
 find_package(Matlab COMPONENTS MAIN_PROGRAM REQUIRED)
@@ -20,15 +19,18 @@ add_executable(main main.cpp)
 # --- Matlab + Java: stdin pipe example
 
 add_test(NAME MatlabJavaCXX
-COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_java(${a}, ${b}) == ${c})"
-WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_java(${a}, ${b}, '$<TARGET_FILE:main>') == ${c})"
 )
 
 # --- Matlab + Python: stdin pipe example
 
 add_test(NAME MatlabPythonCXX
-COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_python(${a}, ${b}) == ${c})"
-WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_python(${a}, ${b}, '$<TARGET_FILE:main>') == ${c})"
 )
 
 set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY TIMEOUT 90)
+set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+if(NOT PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+  file(GENERATE OUTPUT .gitignore CONTENT "*")
+endif()

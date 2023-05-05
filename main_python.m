@@ -1,12 +1,12 @@
-function ab_sum = main_python(a,b)
+function ab_sum = main_python(a, b, exe)
 %% demo adding two number via Fortran executable called by Python
 arguments
   a (1,1) {mustBeReal}
   b (1,1) {mustBeReal}
+  exe (1,1) string {mustBeNonzeroLengthText}
 end
 
-exe = find_exe("main");
-assert(~isempty(exe), "need to 'buildtool compile'")
+assert(isfile(exe), "please build project with CMake or 'buildtool compile'")
 
 %% assemble stdin
 % notice that the last character is a newline.

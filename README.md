@@ -15,14 +15,6 @@ Ultimately the fastest runtime performance is probably by directly connecting th
 This piping method works with blackbox executables or executables that cannot be recompiled for various reasons.
 If your application allows, doing this directly in Python is generally easier and of course Python works better than Matlab for many such real-world deployed applications.
 
-From Matlab:
-
-```matlab
-buildtool compile test
-```
-
-Or use CMake:
-
 ```sh
 cmake -B build
 cmake --build build

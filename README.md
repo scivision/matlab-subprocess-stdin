@@ -6,7 +6,7 @@ These examples are readily adaptable to more complex situations.
 * Java: built into Matlab, more complicated call syntax
 * Python: easier syntax, end user has to setup
 
-Using Matlab system() does not allow for stdin pipes, but these examples do allow stdin pipes.
+Matlab system() does not allow for stdin pipes, but these examples do allow stdin pipes.
 
 These methods can be used asynchronously in a number of ways, depending on your application.
 Using stdin / stdout instead of temporary files can be faster.
@@ -20,7 +20,6 @@ cmake -B build
 cmake --build build
 ctest --test-dir build
 ```
-
 
 ## Notes
 

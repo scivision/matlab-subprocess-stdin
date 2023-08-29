@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.19)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(FATAL_ERROR "use out-of-source build:
+  cmake -Bbuild")
+endif()
+
 project(STDIN_examples LANGUAGES CXX)
 
 enable_testing()
@@ -31,6 +36,4 @@ COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_python(${a}, ${b}, '$<TARGET_
 set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY TIMEOUT 90)
 set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-if(NOT PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
-  file(GENERATE OUTPUT .gitignore CONTENT "*")
-endif()
+file(GENERATE OUTPUT .gitignore CONTENT "*")

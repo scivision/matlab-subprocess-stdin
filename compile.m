@@ -1,8 +1,9 @@
-function bin = compile(src)
+function bin = compile(src, bindir)
 %% compile single source file (C, C++, Fortran)
 % tries to use mex compiler, falls back to generic GCC-like compiler
 arguments (Input)
   src (1,1) string {mustBeFile}
+  bindir (1,1) string = tempdir
 end
 arguments (Output)
   bin (1,1) string {mustBeFile}
@@ -50,7 +51,7 @@ if(~isempty(c))
 
   if msvcLike
     shell = append('"', shell, '"');
-    extraFlag = append("/EHsc /Fo", tempdir);
+    extraFlag = append("/EHsc /Fo", bindir);
     outFlag = "/link /out:";
   end
 end

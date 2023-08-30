@@ -17,23 +17,18 @@ set(a 5)
 set(b 3)
 math(EXPR c "${a} + ${b}")
 
-# --- test executable
-add_executable(main main.cpp)
+# --- test executables
+add_executable(stdin_sum_print stdin_sum_print.cpp)
+add_executable(env_print env_print.cpp)
 # add_executable(main_fortran main.f90)
 
-# --- Matlab + Java: stdin pipe example
-
-add_test(NAME MatlabJavaCXX
-COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_java(${a}, ${b}, '$<TARGET_FILE:main>') == ${c})"
+add_test(NAME MatlabSubprocess
+COMMAND ${Matlab_MAIN_PROGRAM} -batch
+  "r = runtests('${CMAKE_CURRENT_SOURCE_DIR}'); assert(~isempty(r)), assert(sum([r.Incomplete])==0), assertSuccess(r)"
 )
 
-# --- Matlab + Python: stdin pipe example
 
-add_test(NAME MatlabPythonCXX
-COMMAND ${Matlab_MAIN_PROGRAM} -batch "assert(main_python(${a}, ${b}, '$<TARGET_FILE:main>') == ${c})"
-)
-
-set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY TIMEOUT 90)
-set_property(TEST MatlabJavaCXX MatlabPythonCXX PROPERTY WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+set_property(TEST MatlabSubprocess PROPERTY TIMEOUT 90)
+set_property(TEST MatlabSubprocess PROPERTY WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GENERATE OUTPUT .gitignore CONTENT "*")

@@ -1,27 +1,25 @@
-function [status, msg] = subprocess_run(cmd_array, opt)
-
+function [status, msg] = subprocess_run(cmd, opt)
+%% use Matlab Java ProcessBuilder interface to run subprocess and use stdin/stdout pipes
 arguments
-  cmd_array (1,:) string
+  cmd (1,:) string
   opt.env struct {mustBeScalarOrEmpty} = struct.empty
   opt.cwd string {mustBeScalarOrEmpty} = string.empty
   opt.stdin string {mustBeScalarOrEmpty} = string.empty
 end
 
-exe = space_quote(cmd_array(1));
-
-if length(cmd_array) > 1
-  cmd = append(exe, " ", join(cmd_array(2:end), " "));
-else
-  cmd = exe;
-end
-
+cmd(1) = space_quote(cmd(1));
+assert(isfile(cmd(1)), "%s is not a file", cmd(1))
 
 %% process instantiation
 proc = java.lang.ProcessBuilder(cmd);
 
 if ~isempty(opt.env)
+  % requires Parallel Computing Toolbox
   env = proc.environment();
-  env.putAll(opt.env);
+  fields = fieldnames(opt.env);
+  for i = 1:length(fields)
+    env.put(fields{i}, opt.env.(fields{i}));
+  end
 end
 
 if ~isempty(opt.cwd)
@@ -45,9 +43,10 @@ reader = java.io.BufferedReader(java.io.InputStreamReader(h.getInputStream()));
 line = reader.readLine();
 msg = "";
 while ~isempty(line)
-  msg = append(msg, newline, string(line));
+  msg = append(msg, string(line), newline);
   line = reader.readLine();
 end
+msg = strip(msg);
 reader.close()
 
 %% close process handle

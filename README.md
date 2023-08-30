@@ -1,5 +1,7 @@
 # Matlab stdin pipe
 
+[![matlab](https://github.com/scivision/matlab-stdin-pipe/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/matlab-stdin-pipe/actions/workflows/ci.yml)
+
 Using Python or Java to run external processes from Matlab with stdin pipe.
 These examples are readily adaptable to more complex situations.
 

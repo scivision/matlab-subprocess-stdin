@@ -8,7 +8,6 @@ arguments
 end
 
 cmd_array(1) = space_quote(cmd_array(1));
-%assert(isfile(cmd_array(1)), "%s is not a file", cmd_array(1))
 
 
 if ~isempty(opt.env)

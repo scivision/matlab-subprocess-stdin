@@ -8,7 +8,6 @@ arguments
 end
 
 cmd(1) = space_quote(cmd(1));
-assert(isfile(cmd(1)), "%s is not a file", cmd(1))
 
 %% process instantiation
 proc = java.lang.ProcessBuilder(cmd);

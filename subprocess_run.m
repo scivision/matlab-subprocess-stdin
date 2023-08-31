@@ -22,7 +22,6 @@ if ~isempty(opt.env)
 end
 
 if ~isempty(opt.cwd)
-  assert(isfolder(opt.cwd), "subprocess_run: %s is not a folder", opt.cwd)
   proc.directory(java.io.File(opt.cwd));
 end
 

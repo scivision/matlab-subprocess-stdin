@@ -25,6 +25,10 @@ ctest --test-dir build
 
 ## Notes
 
+Like Python subprocess, the executable must exist as a file.
+For example, on Windows the inbuilt shell commands that aren't files like "dir" don't work;
+with native Python `subprocess.run(["dir"])` or Matlab `subprocess_run("dir")` they fail.
+
 ### Windows
 
 On Windows, using `system()` with MPIexec can cause intermittent segfaults that don't occur from Terminal.

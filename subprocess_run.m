@@ -49,7 +49,10 @@ reader.close()
 
 %% close process handle
 h.destroy()
-
+% need this delay in general for Linux and macOS to avoid error
+% java.lang.IllegalThreadStateException: process hasn't exited
+%  	at java.lang.UNIXProcess.exitValue(UNIXProcess.java:423)
+java.lang.Thread.sleep(100)
 status = h.exitValue();
 
 end % function subprocess_run

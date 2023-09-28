@@ -49,7 +49,7 @@ reader.close()
 
 %% close process handle
 h.destroy()
-% need this delay in general for Linux and macOS to avoid error
+% need this delay in general for Linux to avoid error
 % java.lang.IllegalThreadStateException: process hasn't exited
 %  	at java.lang.UNIXProcess.exitValue(UNIXProcess.java:423)
 % 10 ms is arbitrary delay

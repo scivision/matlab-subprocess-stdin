@@ -18,11 +18,14 @@ jobs:
   core:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        matlab: [R2023b]
+        os: [ubuntu-latest]
+        matlab: [R2022b,R2023a,R2023b]
         include:
-        - os: ubuntu-latest
+        - os: windows-latest
           matlab: R2023a
+        - os: macos-latest
+          matlab: R2023a
+  # R2023b only available on Linux runner as of Sept 2023
 
     runs-on: ${{ matrix.os }}
 

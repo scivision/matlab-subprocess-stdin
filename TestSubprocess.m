@@ -1,6 +1,6 @@
 classdef TestSubprocess < matlab.unittest.TestCase
 
-properties 
+properties
 sum_exe = fullfile(fileparts(mfilename("fullpath")), "build/stdin_sum_print");
 env_exe = fullfile(fileparts(mfilename("fullpath")), "build/env_print");
 a = 3;
@@ -52,7 +52,14 @@ tc.assumeTrue(isfile(tc.sum_exe), tc.sum_exe + " is not a file")
 
 in_stream = sprintf('%f %f\n', tc.a, tc.b);
 
+try
 [status, msg] = subprocess_run_python(tc.sum_exe, stdin=in_stream);
+catch excp
+  if excp.identifier == "MATLAB:Python:PythonUnavailable"
+    tc.assumeTrue(false, "Python not available")
+  end
+  rethrow(excp)
+end
 tc.assertEqual(status, 0, "subprocess_run_python failed: " + msg)
 
 %% parse output
@@ -67,7 +74,14 @@ tc.assumeTrue(isfile(tc.sum_exe), tc.sum_exe + " is not a file")
 
 env = struct(TESTMATVAL123="hi_there");
 
+try
 [status, msg] = subprocess_run_python([tc.env_exe, "TESTMATVAL123"], env=env);
+catch excp
+  if excp.identifier == "MATLAB:Python:PythonUnavailable"
+    tc.assumeTrue(false, "Python not available")
+  end
+  rethrow(excp)
+end
 tc.assertEqual(status, 0, "subprocess_run_python failed: " + msg)
 
 %% parse output

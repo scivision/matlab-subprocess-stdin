@@ -21,10 +21,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        matlab: ["R2023a"]
+        matlab: [R2023b]
         include:
         - os: ubuntu-latest
-          matlab: "R2023b"
+          matlab: R2023a
 
     steps:
 

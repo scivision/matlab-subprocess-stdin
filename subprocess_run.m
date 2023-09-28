@@ -52,8 +52,8 @@ h.destroy()
 % need this delay in general for Linux and macOS to avoid error
 % java.lang.IllegalThreadStateException: process hasn't exited
 %  	at java.lang.UNIXProcess.exitValue(UNIXProcess.java:423)
-% 100 ms is arbitrary delay
-java.lang.Thread.sleep(100)
+% 10 ms is arbitrary delay
+java.lang.Thread.sleep(10)
 status = h.exitValue();
 
 end % function subprocess_run

@@ -9,7 +9,6 @@ end
 
 cmd_array(1) = space_quote(cmd_array(1));
 
-
 if ~isempty(opt.env)
   % TODO: to make this not set in Matlab global scope, we need to getenv()
   % and then append desired env var to that struct.

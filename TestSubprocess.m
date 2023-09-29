@@ -9,6 +9,7 @@ end
 
 methods (TestClassSetup)
 function path_get(tc)
+tc.assumeFalse(isMATLABReleaseOlderThan("R2021a"), "Matlab >= R2021a syntax")
 if ispc
   tc.sum_exe = tc.sum_exe + ".exe";
   tc.env_exe = tc.env_exe + ".exe";

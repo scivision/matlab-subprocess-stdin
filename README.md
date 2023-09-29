@@ -2,7 +2,7 @@
 
 [![matlab](https://github.com/scivision/matlab-subprocess-stdin/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/matlab-subprocess-stdin/actions/workflows/ci.yml)
 
-Using Python or Java to run external processes from Matlab with stdin pipe.
+Using Python or Java to run external processes from Matlab >= R2021a with stdin pipe.
 These examples are readily adaptable to more complex situations.
 
 * Java: built into Matlab, more complicated call syntax

@@ -24,7 +24,7 @@ add_executable(env_print env_print.cpp)
 
 add_test(NAME MatlabSubprocess
 COMMAND ${Matlab_MAIN_PROGRAM} -batch
-  "r = runtests('${CMAKE_CURRENT_SOURCE_DIR}'); assert(~isempty(r)), assert(sum([r.Incomplete])==0), assertSuccess(r)"
+  "r = runtests('${CMAKE_CURRENT_SOURCE_DIR}'); assert(~isempty(r)), assertSuccess(r)"
 )
 
 

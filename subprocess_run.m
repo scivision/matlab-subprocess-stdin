@@ -48,6 +48,7 @@ msg = strip(msg);
 reader.close()
 
 %% wait for process to complete
+% https://docs.oracle.com/javase/9/docs/api/java/lang/Process.html#waitFor--
 status = h.waitFor();
 
 h.destroy()

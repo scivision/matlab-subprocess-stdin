@@ -47,14 +47,10 @@ end
 msg = strip(msg);
 reader.close()
 
-%% close process handle
+%% wait for process to complete
+status = h.waitFor();
+
 h.destroy()
-% need this delay in general for Linux to avoid error
-% java.lang.IllegalThreadStateException: process hasn't exited
-%  	at java.lang.UNIXProcess.exitValue(UNIXProcess.java:423)
-% 10 ms is arbitrary delay
-java.lang.Thread.sleep(10)
-status = h.exitValue();
 
 end % function subprocess_run
 

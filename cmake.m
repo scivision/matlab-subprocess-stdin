@@ -21,7 +21,6 @@ assert(system(cmd) == 0, "error configuring %s with CMake", src_dir)
 %% build
 cmd = "cmake --build " + build_dir + " --parallel";
 
-ret = system(cmd);
-assert(ret == 0, 'error building with CMake in %s', build_dir)
+assert(system(cmd) == 0, 'error building with CMake in %s', build_dir)
 
 end % function

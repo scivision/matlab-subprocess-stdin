@@ -2,38 +2,31 @@
 
 [![matlab](https://github.com/scivision/matlab-subprocess-stdin/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/matlab-subprocess-stdin/actions/workflows/ci.yml)
 
-Using Python or Java to run external processes from Matlab >= R2021a with stdin pipe.
-These examples are readily adaptable to more complex situations.
+Uses Java
+[ProcessBuilder](https://docs.oracle.com/javase/9/docs/api/java/lang/ProcessBuilder.html)
+(built into Matlab) to run external processes from Matlab >= R2021a with stdin pipe.
+Matlab
+[system()](https://www.mathworks.com/help/matlab/ref/system.html)
+does not allow for stdin pipes, but these examples do allow stdin pipes.
+Using stdin / stdout instead of temporary scratch files can be faster and more robust.
 
-* Java: built into Matlab, more complicated call syntax
-* Python: easier syntax, end user has to setup
+## Usage
 
-Matlab system() does not allow for stdin pipes, but these examples do allow stdin pipes.
-
-These methods can be used asynchronously in a number of ways, depending on your application.
-Using stdin / stdout instead of temporary files can be faster.
-Ultimately the fastest runtime performance is probably by directly connecting the compiled executable to Matlab libraries, but that takes considerable additional development time.
-
-This piping method works with blackbox executables or executables that cannot be recompiled for various reasons.
-If your application allows, doing this directly in Python is generally easier and of course Python works better than Matlab for many such real-world deployed applications.
+Simply copy [subprocess_run.m](./subprocess_run.m) into your Matlab project.
 
 ```sh
 cmake -B build
 cmake --build build
-ctest --test-dir build
+
+ctest --test-dir build -V
 ```
 
 ## Notes
 
-Like Python subprocess, the executable must exist as a file.
-For example, on Windows the inbuilt shell commands that aren't files like "dir" don't work;
-with native Python `subprocess.run(["dir"])` or Matlab `subprocess_run("dir")` they fail.
-
+The executable must exist as a file.
+For example, on Windows the inbuilt shell commands that aren't files like "dir" don't work.
+This is also true in Python subprocess module.
 ### Windows
 
 On Windows, using `system()` with MPIexec can cause intermittent segfaults that don't occur from Terminal.
-Try using py.subprocess instead of system() on Windows, checking first that the user has Python available.
-
-### GNU Octave
-
-Because the syntax of GNU Octave Java subsystem is distinct and doesn't always work from Windows, this project code is for Matlab only.
+Using our Java ProcessBuilder-based subprocess_run() can mitigate this issue.

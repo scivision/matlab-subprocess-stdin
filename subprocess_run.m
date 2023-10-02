@@ -1,5 +1,6 @@
-function [status, msg] = subprocess_run(cmd, opt)
-%% use Matlab Java ProcessBuilder interface to run subprocess and use stdin/stdout pipes
+function [status, stdout, stderr] = subprocess_run(cmd, opt)
+% SUBPROCESS_RUN run a program with arguments and options
+% uses Matlab Java ProcessBuilder interface to run subprocess and use stdin/stdout pipes
 arguments
   cmd (1,:) string
   opt.env struct {mustBeScalarOrEmpty} = struct.empty
@@ -7,10 +8,8 @@ arguments
   opt.stdin string {mustBeScalarOrEmpty} = string.empty
 end
 
-cmd(1) = space_quote(cmd(1));
-
 %% process instantiation
-proc = java.lang.ProcessBuilder(cmd);
+proc = java.lang.ProcessBuilder("");
 
 if ~isempty(opt.env)
   % requires Parallel Computing Toolbox
@@ -21,10 +20,14 @@ if ~isempty(opt.env)
   end
 end
 
-if ~isempty(opt.cwd)
+if isempty(opt.cwd)
+  cmd(1) = exe_cwd(cmd(1));
+else
+  mustBeFolder(opt.cwd)
   proc.directory(java.io.File(opt.cwd));
 end
 
+proc.command(cmd);
 %% start process
 h = proc.start();
 
@@ -36,8 +39,53 @@ if ~isempty(opt.stdin)
   writer.close()
 end
 
-%% stdout pipe
-reader = java.io.BufferedReader(java.io.InputStreamReader(h.getInputStream()));
+%% wait for process to complete
+% https://docs.oracle.com/javase/9/docs/api/java/lang/Process.html#waitFor--
+status = h.waitFor();
+
+%% read stdout, stderr pipes
+stdout = read_stream(h.getInputStream());
+stderr = read_stream(h.getErrorStream());
+
+%% close process
+h.destroy()
+
+if nargout < 2 && strlength(stdout) > 0
+  disp(stdout)
+end
+if nargout < 3 && strlength(stderr) > 0
+  warning(stderr)
+end
+
+end % function subprocess_run
+
+
+function cmd = exe_cwd(cmd)
+% only Windows considers the current working directory as first on Path
+arguments
+  cmd (1,1) string
+end
+
+if ispc
+  return
+end
+
+if isfile(cmd) && ~java.io.File(cmd).isAbsolute()
+  % https://docs.oracle.com/javase/9/docs/api/java/io/File.html#isAbsolute--
+  % Note: getCanonicalPath doesn't work in general becuase it puts Matlab
+  % folder instead of pwd, which is in general incorrect
+  cmd = fullfile(pwd, cmd);
+end
+
+% pass through for shell functions like "dir" on Windows ComSpec that are
+% not files and so never on Path or cwd
+
+end
+
+
+function msg = read_stream(stream)
+
+reader = java.io.BufferedReader(java.io.InputStreamReader(stream));
 line = reader.readLine();
 msg = "";
 while ~isempty(line)
@@ -46,27 +94,5 @@ while ~isempty(line)
 end
 msg = strip(msg);
 reader.close()
-
-%% wait for process to complete
-% https://docs.oracle.com/javase/9/docs/api/java/lang/Process.html#waitFor--
-status = h.waitFor();
-
-h.destroy()
-
-end % function subprocess_run
-
-
-function q = space_quote(p)
-%% handle command line arguments that have spaces by quoting
-arguments
-  p (1,1) string
-end
-
-if ~contains(p, " ")
-  q = p;
-  return
-end
-
-q = append('"', p, '"');
 
 end

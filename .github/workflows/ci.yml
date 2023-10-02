@@ -37,5 +37,15 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: CMake workflow
-      run: cmake --workflow --preset default
+    - name: Run Matlab tests (buildtool)
+      if: ${{ matrix.matlab >= 'R2022b' }}
+      timeout-minutes: 10
+      uses: matlab-actions/run-build@v1
+
+    - name: Run tests (manual)
+      if: ${{ matrix.matlab < 'R2022b' }}
+      timeout-minutes: 10
+      uses: matlab-actions/run-tests@v1
+      with:
+        strict: true
+        select-by-folder: test

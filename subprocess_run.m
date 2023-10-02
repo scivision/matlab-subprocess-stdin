@@ -20,9 +20,7 @@ if ~isempty(opt.env)
   end
 end
 
-if isempty(opt.cwd)
-  cmd(1) = exe_cwd(cmd(1));
-else
+if ~isempty(opt.cwd)
   mustBeFolder(opt.cwd)
   proc.directory(java.io.File(opt.cwd));
 end
@@ -58,29 +56,6 @@ if nargout < 3 && strlength(stderr) > 0
 end
 
 end % function subprocess_run
-
-
-function cmd = exe_cwd(cmd)
-% only Windows considers the current working directory as first on Path
-arguments
-  cmd (1,1) string
-end
-
-if ispc
-  return
-end
-
-if isfile(cmd) && ~java.io.File(cmd).isAbsolute()
-  % https://docs.oracle.com/javase/9/docs/api/java/io/File.html#isAbsolute--
-  % Note: getCanonicalPath doesn't work in general becuase it puts Matlab
-  % folder instead of pwd, which is in general incorrect
-  cmd = fullfile(pwd, cmd);
-end
-
-% pass through for shell functions like "dir" on Windows ComSpec that are
-% not files and so never on Path or cwd
-
-end
 
 
 function msg = read_stream(stream)

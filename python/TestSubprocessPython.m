@@ -13,14 +13,14 @@ if ispc
   tc.sum_exe = tc.sum_exe + ".exe";
   tc.env_exe = tc.env_exe + ".exe";
 end
+mustBeFile(tc.sum_exe)
+mustBeFile(tc.env_exe)
 end
 end
 
 methods (Test)
 
 function TestPythonSum(tc)
-tc.assumeTrue(isfile(tc.sum_exe), tc.sum_exe + " is not a file")
-
 in_stream = sprintf('%f %f\n', tc.a, tc.b);
 
 try
@@ -41,8 +41,6 @@ end
 
 function TestPythonEnv(tc)
 %% test setting an env var and printing its value
-tc.assumeTrue(isfile(tc.sum_exe), tc.sum_exe + " is not a file")
-
 env = struct(TESTMATVAL123="hi_there");
 
 try

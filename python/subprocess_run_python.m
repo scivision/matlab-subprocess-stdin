@@ -30,7 +30,7 @@ if isempty(opt.cwd)
   cwd = py.None;
 else
   cwd = opt.cwd;
-  assert(isfolder(opt.cwd), "subprocess_run: %s is not a folder", opt.cwd)
+  mustBeFolder(opt.cwd)
 end
 
 args = pyargs(input=stdin, text=true, timeout=5, stdout=py.subprocess.PIPE, stderr=py.subprocess.PIPE, cwd=cwd);

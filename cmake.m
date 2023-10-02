@@ -10,9 +10,13 @@ end
 % build_dir needs absolute as well or CMake will use pwd instead
 % see Matlab-stdlib posix and absolute_path for solution.
 
-assert(isfile(fullfile(src_dir, "CMakeLists.txt")), "%s does not contain CMakeLists.txt", src_dir)
+mustBeFile(fullfile(src_dir, "CMakeLists.txt"))
 
-assert(system("cmake --version") == 0, 'CMake not found')
+[ret, ~] = system("cmake --version");
+if ret ~= 0
+  macos_path()
+  assert(system("cmake --version") == 0, "CMake not found")
+end
 
 %% configure
 cmd = "cmake -S" + src_dir + " -B" + build_dir;

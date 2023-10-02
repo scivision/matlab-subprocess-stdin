@@ -9,7 +9,11 @@ project(STDIN_examples LANGUAGES CXX)
 
 enable_testing()
 
-find_package(Matlab COMPONENTS MAIN_PROGRAM REQUIRED)
+message(STATUS "CMake ${CMAKE_VERSION}")
+
+find_package(Matlab COMPONENTS MAIN_PROGRAM)
+# not REQUIRED because we don't need default MEX stuff
+message(STATUS "Matlab_MAIN_PROGRAM: ${Matlab_MAIN_PROGRAM}")
 
 # --- test executables
 add_executable(stdin_sum_print test/stdin_sum_print.cpp)

@@ -53,11 +53,22 @@ function TestJavaEnv(tc)
 %% test setting an env var and printing its value
 env = struct(TESTMATVAL123="hi_there");
 
-[status, msg] = subprocess_run([tc.env_exe, "TESTMATVAL123"], env=env);
-tc.assertEqual(status, 0, "subprocess_run failed: " + msg)
+[status, out, err] = subprocess_run([tc.env_exe, "TESTMATVAL123"], env=env);
+tc.assertEqual(status, 0, "subprocess_run failed: " + out)
 
 %% parse output
-tc.verifyEqual(msg, env.TESTMATVAL123)
+tc.verifyEqual(out, env.TESTMATVAL123)
+tc.verifyEqual(err, "")
+end
+
+function TestJavaStdErr(tc)
+%% test that StdErr is working
+
+[status, out, err] = subprocess_run([tc.env_exe, "TESTMATVAL123"]);
+tc.assertNotEqual(status, 0, "subprocess_run should have failed")
+tc.verifyEqual(out, "")
+tc.verifyEqual(err, "Environment variable TESTMATVAL123 not found")
+
 end
 
 end

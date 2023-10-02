@@ -1,6 +1,7 @@
 # Matlab stdin pipe
 
 [![matlab](https://github.com/scivision/matlab-subprocess-stdin/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/matlab-subprocess-stdin/actions/workflows/ci.yml)
+[![View matlab-subprocess-stdin on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/136085-matlab-subprocess-stdin)
 
 Uses Java
 [ProcessBuilder](https://docs.oracle.com/javase/9/docs/api/java/lang/ProcessBuilder.html)

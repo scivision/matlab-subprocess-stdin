@@ -6,9 +6,7 @@
   "name": "default",
   "binaryDir": "${sourceDir}/build",
   "cacheVariables": {
-    "CMAKE_COMPILE_WARNING_AS_ERROR": true,
-    "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build",
-    "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build"
+    "CMAKE_COMPILE_WARNING_AS_ERROR": true
   }
 }
 ],

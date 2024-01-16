@@ -12,7 +12,7 @@ prefix_path = ["/opt/homebrew/bin", "/usr/local/bin", "/opt/local/bin"];
 
 [ret, homebrew_prefix] = system('brew --prefix');
 if ret == 0
-  prefix_path = homebrew_prefix;
+  prefix_path = [strip(homebrew_prefix), prefix_path];
 end
 
 addpath_if_needed(prefix_path)

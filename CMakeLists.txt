@@ -32,11 +32,10 @@ add_executable(env_print test/env_print.cpp)
 # add_executable(main_fortran main.f90)
 
 add_test(NAME MatlabSubprocess
-COMMAND ${Matlab_MAIN_PROGRAM} -batch
-  "r = runtests('${CMAKE_CURRENT_SOURCE_DIR}/test'); assert(~isempty(r)), assertSuccess(r)"
+COMMAND ${Matlab_MAIN_PROGRAM} -batch buildtool test
+WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 set_property(TEST MatlabSubprocess PROPERTY TIMEOUT 90)
-set_property(TEST MatlabSubprocess PROPERTY WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GENERATE OUTPUT .gitignore CONTENT "*")

@@ -27,6 +27,7 @@ ctest --test-dir build -V
 The executable must exist as a file.
 For example, on Windows the inbuilt shell commands that aren't files like "dir" don't work.
 This is also true in Python subprocess module.
+
 ### Windows
 
 On Windows, using `system()` with MPIexec can cause intermittent segfaults that don't occur from Terminal.
